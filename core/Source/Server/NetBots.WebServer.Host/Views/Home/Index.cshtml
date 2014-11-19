@@ -1,38 +1,20 @@
 ﻿@{
-    Layout = null;
+    ViewBag.Title = "Home Page";
 }
 
-<!DOCTYPE html>
+<div class="jumbotron">
+    <h1>NetBots</h1>
+</div>
 
-<html>
-<head>
-    <meta name="viewport" content="width=device-width" />
-    <title>Index</title>
-    <link rel="icon" href="/favicon.ico" sizes="16x16 32x32 48x48 64x64" type="image/vnd.microsoft.icon">
-</head>
-<body>
-    <h2>Bot War</h2>
-    <div>
-        <button id="new-game">New Game</button>
-    </div>
+<link rel="stylesheet" type="text/css" href="/stylesheets/style.css">
 
-    <h3>News</h3>
-    <p>Our aerial reconnaissance vehicles are picking up the following feed of the battle as it unfolds. </p>
-    <canvas id="game" height="500" width="500" style="border-color: lightgrey; border-style: solid; border-width:2px;"></canvas>
-    <p>Our bots color is <span data-bind="text: color"></span>.</p>
-    <p> We have <span class="energy-news" data-bind="text: ourEnergy"></span> energy in reserves.</p>
-    <p> Our Enemey has <span class="energy-news" data-bind="text: theirEnergy"></span> energy in reserves.</p>
-    <p>The battle will continue for <span id="moves-left" data-bind="text: movesRemaining"></span> cycles.</p>
-    <p></p>
-    
-    @Scripts.Render("~/bundles/jquery")
-    @Scripts.Render("~/bundles/signalR")
-    @Scripts.Render("~/bundles/knockout")
-    
-    <script type="text/javascript" src="~/signalr/hubs"></script>
-    <script type="text/javascript" src="~/Scripts/WarViewer.js"></script>
-    <script type="text/javascript">
-        $("#new-game").on('click', function () { $.post("Home/NewGame"); });
-    </script>
-</body>
-</html>
+<h1>History</h1>
+
+<p>The year is 3015. Earth is no longer the paradise it once was. The rain forests are just a myth. The oceans are foul and slick with oil. Potable water has become the main form of currency - and war. Humans no longer live in cities, but in small urban tribal communities. They battle one another, but their biggest fear is the Bots. Humans no longer ponder the meaning of life or when it all began. They know the Singularity is the beginning - and the end.</p>
+
+<p>Something has changed though. The Bots evolved into something wholly unexpected - they developed emotions. In juxaposition to the humans who turned from primal emotions into sentient beings, the Bots have tured from sentient beings into entities driven by emotion.</p>
+
+<p>These emotion driven Bots no longer work towards the same goals and war has broken out among the Bots with devestating consquences to the human race who are nothing but collateral to the Bots. This war will continue until only one Bot remains.</p>
+
+
+

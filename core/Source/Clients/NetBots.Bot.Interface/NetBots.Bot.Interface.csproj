@@ -35,11 +35,7 @@
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="BotletMove.cs" />
-    <Compile Include="GameState.cs" />
     <Compile Include="INetBot.cs" />
-    <Compile Include="MoveRequest.cs" />
-    <Compile Include="Player.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -50,6 +46,12 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\Engine\NetBots.Web\NetBots.Web.csproj">
+      <Project>{96add411-cedb-4089-8e9a-02257175d90f}</Project>
+      <Name>NetBots.Web</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

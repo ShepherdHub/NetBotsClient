@@ -6,13 +6,15 @@ using NetBots.Bot.Interface;
 
 namespace NetBots.Bot.Host.Controllers
 {
+    using Web;
+
     public class HomeController : Controller
     {
         [HttpPost]
-        public ActionResult Index(string data)
+        public ActionResult Index(MoveRequest moveRequest)
         {
-            var moveRequest = (JsonConvert.DeserializeObject<MoveRequest>(data));
-            var moves = new Ai().GetMoves(moveRequest);
+            var moves = new GrahamAi().GetMoves(moveRequest);
+
             return Json(moves);
         }
 

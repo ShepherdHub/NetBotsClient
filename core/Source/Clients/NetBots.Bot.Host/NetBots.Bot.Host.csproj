@@ -53,6 +53,8 @@
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Content Include="favicon.ico" />
     <Content Include="Global.asax" />
+    <Content Include="Scripts\knockout-3.2.0.debug.js" />
+    <Content Include="Scripts\knockout-3.2.0.js" />
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
@@ -76,6 +78,10 @@
     <ProjectReference Include="..\..\Engine\Core\NetBots.Core.csproj">
       <Project>{1522e445-ffd4-43d3-81c7-b3c672199666}</Project>
       <Name>NetBots.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Engine\NetBots.Web\NetBots.Web.csproj">
+      <Project>{96add411-cedb-4089-8e9a-02257175d90f}</Project>
+      <Name>NetBots.Web</Name>
     </ProjectReference>
     <ProjectReference Include="..\GrahamBot\GrahamBot.csproj">
       <Project>{272aa56c-0448-41fb-b2d5-bf7a229988cb}</Project>

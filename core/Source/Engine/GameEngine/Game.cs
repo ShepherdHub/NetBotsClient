@@ -7,6 +7,8 @@ using NetBots.Core;
 
 namespace NetBots.GameEngine
 {
+    using Web;
+
     public class Game
     {
         private readonly IDice _myDice;
@@ -14,29 +16,24 @@ namespace NetBots.GameEngine
         public List<BotPlayer> Players;
         int _energySpawnFrequency;
 
-        //this is creating a schism between where the player should be updated. need gamestate with more dynamic players
-        public Game(GameState gameState, IEnumerable<BotPlayer> players){
-            GameState = gameState;
-            _myDice = new Dice();
-            Players = players.ToList();
-            _energySpawnFrequency = 5;
-        }
-
-        public Game(GameState gameState, IEnumerable<BotPlayer> players, int seed)
-        {
-            GameState = gameState;
-            _myDice = new Dice(seed);
-            Players = players.ToList();
-            _energySpawnFrequency = 5;
-        }
-
-        public Game(GameState gameState, IEnumerable<BotPlayer> players, IDice dice)
+        public Game(GameState gameState, string p1Url, string p2Url, IDice dice)
         {
             GameState = gameState;
             _myDice = dice;
-            Players = players.ToList();
+            Players = GetPlayers(gameState.Cols, p1Url, p2Url);
             _energySpawnFrequency = 5;
         }
+
+        public Game(GameState gameState, string p1Url, string p2Url)
+            : this(gameState, p1Url, p2Url, new Dice())
+        {
+        }
+
+        public Game(GameState gameState, string p1Url, string p2Url, int seed)
+            :this (gameState, p1Url, p2Url, new Dice(seed))
+        {
+        }
+        
 
         public void UpdateGameState(IEnumerable<PlayerMoves> playersMoves)
         {
@@ -107,9 +104,7 @@ namespace NetBots.GameEngine
             int botsAdjacentToEnergy = 0;
             foreach (BotPlayer player in Players)
             {
-                int playersBotsAdjacentToEnergy = adjacentPositions
-                    .Where(a => GameState.Grid[a] == player.BotletId)
-                    .Count();
+                int playersBotsAdjacentToEnergy = adjacentPositions.Count(a => GameState.Grid[a] == player.BotletId);
                 if (playersBotsAdjacentToEnergy > botsAdjacentToEnergy)
                     winningPlayer = player;
                 else if (playersBotsAdjacentToEnergy == botsAdjacentToEnergy)
@@ -237,7 +232,14 @@ namespace NetBots.GameEngine
 
         private void _CheckForWinner()
         {
-            //AreMovesWellFormed
+            if (GameState.Grid.All(x => x != '1'))
+            {
+                GameState.Winner = "p2";
+            }
+            if (GameState.Grid.All(x => x != '2'))
+            {
+                GameState.Winner = "p1";
+            }
         }
 
         private void _SanitizeMoves(IEnumerable<PlayerMoves> playersMoves)
@@ -299,11 +301,14 @@ namespace NetBots.GameEngine
                     switch (grid[move.To])
                     {
                         //this rule seems weird, it implies that you can collect/spawn on same turn.
+                        //but you would have to see the energy spawn next to your bot the move before
+                        //and know the rule in order to take advantage of the quick-spawn.
                         case  '*':
                             if (botPlayer.PlayerName == "p1")
                                 GameState.P1.Energy++;
                             else
                                 GameState.P2.Energy++;
+                            //grid[move.To] = botPlayer.BotletId;
                             break;
                         case '.':
                             grid[move.To] = botPlayer.BotletId;
@@ -319,6 +324,40 @@ namespace NetBots.GameEngine
 
         private char[] _GetGridAfterMove(char[] grid, string player){
             return grid;
+        }
+
+        public static List<BotPlayer> GetPlayers(int boardWidth, string bot1Url, string bot2Url)
+        {
+            BotPlayer red = new BotPlayer()
+            {
+                PlayerName = "p1",
+                BotletId = '1',
+                Energy = 1,
+                Uri = GetNormalizedUri(bot1Url),
+                Spawn = boardWidth + 1,
+                Resource = Resource.P1Botlet,
+                deadBotletId = 'x'
+            };
+            BotPlayer blue = new BotPlayer()
+            {
+                PlayerName = "p2",
+                BotletId = '2',
+                Energy = 1,
+                Uri = GetNormalizedUri(bot2Url),
+                Spawn = boardWidth * (boardWidth - 1) - 2,
+                Resource = Resource.P2Botlet,
+                deadBotletId = 'X'
+            };
+            return new List<BotPlayer>() { red, blue };
+        }
+
+        private static string GetNormalizedUri(string uri)
+        {
+            if (!(uri.StartsWith("http://") || uri.StartsWith("https://")))
+            {
+                uri = "http://" + uri;
+            }
+            return uri;
         }
     }
 }
